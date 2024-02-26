@@ -12,7 +12,7 @@ function App() {
     
     <BrowserRouter>
       <Toaster />
-      <div className="flex h-screen max-sm:overflow-hidden sm:items-center justify-center sm:p-5 p-2">
+      <div className="flex h-screen items-center justify-center sm:p-5 p-2">
         <Routes>
           <Route path="/" element={authUser?<Navigate to={'/home'} />:<Login />} />
           <Route path="/signup" element={authUser?<Navigate to={'/home'} />:<Signup />} />
