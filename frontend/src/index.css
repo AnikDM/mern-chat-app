@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background: url('https://i.pinimg.com/originals/93/50/55/935055c542ec90cd73007a64f4e898d9.gif');
+    background: url('https://cdn.svgator.com/images/2022/06/use-svg-as-background-image-particle-strokes.svg');
+    /* background: url('https://steamuserimages-a.akamaihd.net/ugc/1792974219414367376/C57A6A64BDC94E5EEA7F62CFB6A2E76F401AA6F4/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true');*/
+  background-size: cover; 
+  background-position: center center;
+  background-repeat: no-repeat;
+
+}
+.user-hover-active {
+    @apply sm:hover:text-neutral-content sm:rounded-2xl sm:hover:bg-white/10;
+  }
+.user-active {
+    @apply sm:text-primary-content sm:rounded-2xl sm:bg-primary;
+  }
+.user-active-sm {
+    @apply border-4 border-primary;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-transparent my-2  ;
+    border-radius:10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    @apply bg-primary;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply cursor-grabbing;
+}
+.animate-popup{
+transition: all 0.5s;
+animation: popup 0.5s;
+animation-iteration-count: 1;
+}
+@keyframes popup {
+  0% {
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
