@@ -15,11 +15,13 @@ const Home = () => {
   const { selectedConversation } = useConversation();
   const {messages,setMessages}=useConversation();
   const [cnt,setCnt]=useState(0);
+  const [searchList,setSearchList]=useState([]);
   const handleUser = async () => {
     if (authUser) {
       const res = await fetch("/api/users/");
       let data = await res.json();
       setAllUser(data);
+      setSearchList(data);
     }
   };
   useEffect(() => {
@@ -80,6 +82,10 @@ const Home = () => {
       toast.error(error.message);
     }
   }
+  function handleSearch(e){
+    const list=allusers.filter((u)=> u.fullname.toLowerCase().includes(e.target.value.toLowerCase()))
+    setSearchList(list)
+  }
   return (
     <div className="rounded-2xl bg-white/5 shadow-lg h-full  w-full backdrop-blur-md flex overflow-hidden max-sm:">
       <div className="w-1/3 sm:p-3 max-sm:py-2 relative max-sm:w-1/5 max-sm:absolute z-10 max-sm:left-0 max-sm:bg-base-100 h-full">
@@ -94,7 +100,7 @@ const Home = () => {
           </div>
         </div>
         <label className="input input-bordered flex items-center rounded-2xl gap-2 mb-5 max-sm:hidden">
-          <input type="text" className="grow" placeholder="Search" />
+          <input type="text" className="grow" placeholder="Search" onChange={e=>handleSearch(e)}/>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -108,15 +114,18 @@ const Home = () => {
             />
           </svg>
         </label>
-        <div className="divider max-sm:m-0"></div>
-        <div className="sm:pt-5 pt-2 max-h-[500px] overflow-auto">
-          {allusers.map((item) => {
+        {/* <div className="relative">
+          <ul className="bg-base-100 w-full absolute z-10 rounded-md p-3">
+            {searchList.map(item=><li key={item}>{item}</li>)}
+          </ul>
+        </div> */}
+        <div className="divider max-sm:m-0 mb-0"></div>
+        <div className="sm:pt-0 pt-2 max-h-[500px] overflow-auto">
+          {searchList.length!=0?(searchList.map((item) => {
             return (
-              <>
                 <Conversation key={item._id} item={item} isOnline={onlineUsers.find((user)=>user===item._id)}/>
-              </>
             );
-          })}
+          })):<div className="text-center">No user found</div>}
         </div>
         <div className="absolute bottom-2 max-sm:left-[calc(50%-26px)]">
           <button onClick={(e) => handleLogout(e)} className="btn btn-primary rounded-2xl">
@@ -133,7 +142,7 @@ const Home = () => {
               To: {selectedConversation?.fullname} <span className="sm:hidden">{onlineUsers.find((user)=>user===selectedConversation._id)?(<span className="text-xs font-thin text-success italic">Online</span>):(<span className="text-xs font-thin text-end text-error italic">Offline</span>)}</span>
             </div>
             <div className="p-5 max-h-[calc(100vh-8rem)] overflow-auto w-full" id="chatbox" ref={messagesContainerRef}>
-              {!messages==[]?(messages?.map(item=>{return (<><Messages messages={item} /></>)
+              {!messages==[]?(messages?.map(item=>{return (<Messages key={item._id} messages={item} />)
               })):(<div className="text-center">Send message to start the conversation</div>)}
             </div>
             <div className="w-full p-2 absolute bottom-0">
@@ -143,6 +152,9 @@ const Home = () => {
                 onSubmit={(e) => handleSend(e)}
               >
                 <label className="input input-bordered pe-0 flex items-center rounded-2xl">
+                {/* <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" value={fileInput} onChange={e=>setFileInput(e.target.value)}/> */}
+                  {/* <button className="btn btn-primary">☺</button>
+                  <button className="btn btn-primary">GIF</button> */}
                   <input type="text" className="flex-1 overflow-auto" placeholder="Search" value={text} onChange={e=>setText(e.target.value)}/>
                   <button className="btn btn-primary rounded-2xl absolute right-2" type="submit">
                     <IoSend className=" cursor-pointer" />

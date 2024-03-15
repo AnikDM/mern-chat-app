@@ -32,7 +32,7 @@ const Signup = () => {
       return toast.error(
         "Username can only contain alphanumeric characters and not spaces"
       );
-    console.log(JSON.stringify(formData));
+      
     // send data to server
     const res = await fetch("/api/auth/signup/", {
       method: "POST",
