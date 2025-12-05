@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "server": "nodemon backend/server.js",
-    "start": "node backend/server.js",
+    "start": "concurrently \"npm run server\" \"npm run dev --prefix frontend\"",
     "build": "npm i && npm i --prefix frontend && npm run build --prefix frontend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,6 +24,7 @@
     "socket.io": "^4.7.4"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "cors": "^2.8.5"
   }
 }

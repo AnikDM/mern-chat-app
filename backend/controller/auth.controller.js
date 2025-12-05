@@ -1,7 +1,7 @@
 import User from "../model/user.model.js";
 import generateTokenAndSetCookie from "../utils/getToken.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res,next) => {
     try {
         const { fullname, username, password, confirmPassword, gender } = req.body;
         if (password !== confirmPassword) {
@@ -27,11 +27,11 @@ export const signup = async (req, res) => {
         return res.status(201).json(newUser);
 
     } catch (error) {
-        return res.status(500).json({ error: error })
+        next(error)
     }
 
 }
-export const login = async (req, res) => {
+export const login = async (req, res,next) => {
     const { username, password } = req.body;
     try {
         if (!username || !password)
@@ -48,18 +48,14 @@ export const login = async (req, res) => {
     }
     } 
     catch (error) {
-        console.log(error)
-        if(error.message==="Cannot read properties of null (reading '_id')")
-        return res.status(404).json({ error:"User doesn't exist!" })
-
-        return res.status(500).json({ error:"Internal Error" })
+        next(error)
     }
 }
-export const logout = async (req, res) => {
+export const logout = async (req, res,next) => {
     try {
         res.cookie("jwt", "", { maxAge:0 });
         return res.status(201).json({message:"succesfully logged out"})
     } catch (error) {
-        return res.status(500).json({ error: error })
+        next(error)
     }
 }
